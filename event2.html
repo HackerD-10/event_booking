@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Events - Book & Pay</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and general body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            color: #333; /* Darker text for readability */
+        }
+        /* Custom gradient for the hero section */
+        .hero-gradient {
+            background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%); /* Purple to lighter purple gradient */
+        }
+        /* Modal overlay styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0; /* Hidden by default */
+            visibility: hidden; /* Hidden by default */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px); /* Slight animation on show */
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        /* Message box styling */
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1001; /* Above modal */
+            display: none;
+            font-weight: bold;
+            text-align: center;
+            min-width: 300px;
+        }
+        .message-box.error {
+            background-color: #f44336; /* Red */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Hero Section -->
+    <header class="hero-gradient text-white py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">Discover Our Exciting Events</h1>
+            <p class="text-xl md:text-2xl mb-6">Find your next adventure, learning opportunity, or networking experience.</p>
+        </div>
+    </header>
+
+    <!-- Main Events Grid -->
+    <main id="eventsGridSection" class="max-w-6xl mx-auto py-12 px-4">
+        <h2 class="text-4xl font-bold text-gray-800 mb-10 text-center">Upcoming Events</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Event Card 1: Tech Innovators Summit -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+                <img src="https://placehold.co/600x300/6b46c1/ffffff?text=Tech+Summit" alt="Tech Innovators Summit" class="w-full h-48 object-cover">
+                <div class="p-6 flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Tech Innovators Summit</h3>
+                    <p class="text-purple-600 font-semibold mb-2">October 26, 2025 | 9:00 AM - 5:00 PM PST</p>
+                    <p class="text-gray-600 mb-4">Explore groundbreaking innovations and connect with industry leaders in AI, ML, and cybersecurity.</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xl font-bold text-green-700">Starting from $199.00</span>
+                        <span class="text-sm text-gray-500">Limited Seats!</span>
+                    </div>
+                </div>
+                <div class="p-6 pt-0">
+                    <button class="book-event-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                            data-event-id="tech-summit-2025"
+                            data-event-name="Tech Innovators Summit"
+                            data-event-date="October 26, 2025"
+                            data-passes='[{"name": "Standard Pass", "price": 199.00, "description": "Full access to all sessions."}, {"name": "VIP Pass", "price": 499.00, "description": "Access to exclusive sessions, networking, and VIP lounge."}]'>
+                        Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Card 2: Digital Marketing Masterclass -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+                <img src="https://placehold.co/600x300/805ad5/ffffff?text=Digital+Marketing" alt="Digital Marketing Masterclass" class="w-full h-48 object-cover">
+                <div class="p-6 flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Digital Marketing Masterclass</h3>
+                    <p class="text-purple-600 font-semibold mb-2">November 10-11, 2025 | 10:00 AM - 4:00 PM EST</p>
+                    <p class="text-gray-600 mb-4">Learn advanced strategies in SEO, social media, and content marketing from experts.</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xl font-bold text-green-700">Starting from $299.00</span>
+                        <span class="text-sm text-gray-500">Early Bird Discount!</span>
+                    </div>
+                </div>
+                <div class="p-6 pt-0">
+                    <button class="book-event-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                            data-event-id="digital-marketing-2025"
+                            data-event-name="Digital Marketing Masterclass"
+                            data-event-date="November 10-11, 2025"
+                            data-passes='[{"name": "Basic Pass", "price": 299.00, "description": "Access to all masterclass sessions."}, {"name": "Premium Pass", "price": 599.00, "description": "Includes 1-on-1 mentor session and resources."}]'>
+                        Book Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Card 3: Future of Healthcare Summit -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+                <img src="https://placehold.co/600x300/a78bfa/ffffff?text=Healthcare+Summit" alt="Future of Healthcare Summit" class="w-full h-48 object-cover">
+                <div class="p-6 flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Future of Healthcare Summit</h3>
+                    <p class="text-purple-600 font-semibold mb-2">December 5, 2025 | 9:30 AM - 6:00 PM GMT</p>
+                    <p class="text-gray-600 mb-4">Innovations in medical technology, patient care, and health policy discussions.</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xl font-bold text-green-700">Starting from $149.00</span>
+                        <span class="text-sm text-gray-500">New Event!</span>
+                    </div>
+                </div>
+                <div class="p-6 pt-0">
+                    <button class="book-event-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                            data-event-id="healthcare-summit-2025"
+                            data-event-name="Future of Healthcare Summit"
+                            data-event-date="December 5, 2025"
+                            data-passes='[{"name": "General Admission", "price": 149.00, "description": "Access to main conference sessions."}, {"name": "Researcher Pass", "price": 350.00, "description": "Access to research paper presentations and exclusive workshops."}]'>
+                        Book Now
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Book <span id="modalEventName" class="text-purple-700"></span></h2>
+            <form id="modalBookingForm" class="space-y-6">
+                <!-- Hidden fields to store event details -->
+                <input type="hidden" id="modalEventId" name="eventId">
+                <input type="hidden" id="modalEventDate" name="eventDate">
+
+                <div>
+                    <label for="modalName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="modalName" name="name" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                </div>
+                <div>
+                    <label for="modalEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="modalEmail" name="email" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                </div>
+
+                <!-- Pass Selection Dropdown -->
+                <div>
+                    <label for="modalPassType" class="block text-sm font-medium text-gray-700 mb-1">Select Pass Type</label>
+                    <select id="modalPassType" name="passType" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                    <p id="passDescription" class="text-sm text-gray-500 mt-1"></p>
+                </div>
+
+                <div>
+                    <label for="modalTickets" class="block text-sm font-medium text-gray-700 mb-1">Number of Tickets</label>
+                    <input type="number" id="modalTickets" name="tickets" min="1" value="1" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                </div>
+                <div class="text-lg font-semibold text-gray-800">
+                    Total Price: <span id="totalPrice" class="text-green-700">$0.00</span>
+                </div>
+                <button type="submit"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Proceed to Payment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation & Payment Section -->
+    <section id="confirmationPaymentSection" class="max-w-3xl mx-auto py-12 px-4 hidden">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center">Confirm Your Booking & Pay</h2>
+
+            <div class="space-y-4 mb-8 text-lg">
+                <p><span class="font-semibold text-gray-700">Event:</span> <span id="confirmEventName" class="text-purple-700"></span></p>
+                <p><span class="font-semibold text-gray-700">Date:</span> <span id="confirmEventDate"></span></p>
+                <p><span class="font-semibold text-gray-700">Pass Type:</span> <span id="confirmPassType"></span></p>
+                <p><span class="font-semibold text-gray-700">Tickets:</span> <span id="confirmTickets"></span></p>
+                <p><span class="font-semibold text-gray-700">Booked By:</span> <span id="confirmName"></span> (<span id="confirmEmail"></span>)</p>
+                <hr class="my-4 border-gray-200">
+                <p class="text-2xl font-bold text-gray-800">Total Amount: <span id="confirmTotalPrice" class="text-green-700"></span></p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="payNowBtn"
+                        class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    Pay Now
+                </button>
+                <button id="cancelBookingBtn"
+                        class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Cancel Booking
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Box for confirmation/errors -->
+    <div id="messageBox" class="message-box"></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4 mt-12">
+        <div class="max-w-6xl mx-auto text-center text-gray-400">
+            <p>&copy; 2025 EventHub. All rights reserved.</p>
+            <p class="mt-2">Contact: support@eventhub.com | +1 (555) 123-4567</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventsGridSection = document.getElementById('eventsGridSection');
+            const bookEventButtons = document.querySelectorAll('.book-event-btn');
+            const bookingModal = document.getElementById('bookingModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const modalBookingForm = document.getElementById('modalBookingForm');
+            const modalEventName = document.getElementById('modalEventName');
+            const modalEventId = document.getElementById('modalEventId');
+            const modalEventDate = document.getElementById('modalEventDate');
+            const modalPassType = document.getElementById('modalPassType');
+            const passDescription = document.getElementById('passDescription');
+            const modalTickets = document.getElementById('modalTickets');
+            const totalPriceSpan = document.getElementById('totalPrice');
+            const messageBox = document.getElementById('messageBox');
+
+            const confirmationPaymentSection = document.getElementById('confirmationPaymentSection');
+            const confirmEventName = document.getElementById('confirmEventName');
+            const confirmEventDate = document.getElementById('confirmEventDate');
+            const confirmPassType = document.getElementById('confirmPassType');
+            const confirmTickets = document.getElementById('confirmTickets');
+            const confirmName = document.getElementById('confirmName');
+            const confirmEmail = document.getElementById('confirmEmail');
+            const confirmTotalPrice = document.getElementById('confirmTotalPrice');
+            const payNowBtn = document.getElementById('payNowBtn');
+            const cancelBookingBtn = document.getElementById('cancelBookingBtn');
+
+            let currentEventPasses = []; // To store passes for the currently selected event
+            let currentBookingDetails = {}; // To store details before confirmation
+
+            /**
+             * Displays a message box with the given message and type.
+             * @param {string} message - The message to display.
+             * @param {string} type - 'success' or 'error'.
+             */
+            function showMessageBox(message, type) {
+                messageBox.textContent = message;
+                messageBox.className = 'message-box'; // Reset classes
+                if (type === 'success') {
+                    messageBox.classList.add('bg-green-500', 'text-white');
+                } else if (type === 'error') {
+                    messageBox.classList.add('bg-red-500', 'text-white');
+                }
+                messageBox.style.display = 'block';
+
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    messageBox.style.display = 'none';
+                }, 3000);
+            }
+
+            /**
+             * Calculates and updates the total price based on selected pass and tickets.
+             */
+            function updateTotalPrice() {
+                const selectedPassIndex = modalPassType.selectedIndex;
+                if (selectedPassIndex === -1 || currentEventPasses.length === 0) {
+                    totalPriceSpan.textContent = `$0.00`;
+                    passDescription.textContent = '';
+                    return;
+                }
+
+                const selectedPass = currentEventPasses[selectedPassIndex];
+                const pricePerTicket = selectedPass.price;
+                const numberOfTickets = parseInt(modalTickets.value, 10);
+
+                if (!isNaN(pricePerTicket) && !isNaN(numberOfTickets) && numberOfTickets >= 1) {
+                    const total = (pricePerTicket * numberOfTickets).toFixed(2);
+                    totalPriceSpan.textContent = `$${total}`;
+                    passDescription.textContent = selectedPass.description || ''; // Display pass description
+                } else {
+                    totalPriceSpan.textContent = `$0.00`;
+                    passDescription.textContent = '';
+                }
+            }
+
+            /**
+             * Populates the pass type dropdown based on the selected event's passes.
+             * @param {Array<Object>} passes - An array of pass objects for the event.
+             */
+            function populatePassTypes(passes) {
+                modalPassType.innerHTML = ''; // Clear existing options
+                if (passes && passes.length > 0) {
+                    passes.forEach((pass, index) => {
+                        const option = document.createElement('option');
+                        option.value = index; // Use index to easily retrieve pass details
+                        option.textContent = `${pass.name} - $${pass.price.toFixed(2)}`;
+                        modalPassType.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No passes available';
+                    modalPassType.appendChild(option);
+                    modalPassType.disabled = true; // Disable if no passes
+                }
+                modalPassType.disabled = !(passes && passes.length > 0); // Enable/disable based on passes
+            }
+
+            // Event listener for opening the modal
+            bookEventButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const eventId = button.dataset.eventId;
+                    const eventName = button.dataset.eventName;
+                    const eventDate = button.dataset.eventDate;
+                    const passesData = JSON.parse(button.dataset.passes);
+
+                    // Store current event passes
+                    currentEventPasses = passesData;
+
+                    // Populate modal fields
+                    modalEventName.textContent = eventName;
+                    modalEventId.value = eventId;
+                    modalEventDate.value = eventDate;
+                    modalTickets.value = 1; // Reset tickets to 1
+
+                    populatePassTypes(currentEventPasses); // Populate pass dropdown
+                    updateTotalPrice(); // Calculate initial total price
+
+                    bookingModal.classList.add('show');
+                    bookingModal.classList.remove('hidden');
+                });
+            });
+
+            // Event listener for closing the modal
+            closeModalBtn.addEventListener('click', () => {
+                bookingModal.classList.remove('show');
+                // Use a timeout to allow transition to complete before hiding
+                setTimeout(() => {
+                    bookingModal.classList.add('hidden');
+                }, 300);
+            });
+
+            // Close modal if clicked outside content
+            bookingModal.addEventListener('click', (event) => {
+                if (event.target === bookingModal) {
+                    bookingModal.classList.remove('show');
+                    setTimeout(() => {
+                        bookingModal.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
+            // Listen for changes in the number of tickets or pass type to update total price
+            modalTickets.addEventListener('input', updateTotalPrice);
+            modalPassType.addEventListener('change', updateTotalPrice);
+
+
+            // Event listener for modal form submission (Proceed to Payment)
+            modalBookingForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const name = document.getElementById('modalName').value.trim();
+                const email = document.getElementById('modalEmail').value.trim();
+                const tickets = parseInt(modalTickets.value, 10);
+                const eventId = modalEventId.value;
+                const eventName = modalEventName.textContent;
+                const eventDate = modalEventDate.value;
+
+                const selectedPassIndex = modalPassType.selectedIndex;
+                if (selectedPassIndex === -1 || currentEventPasses.length === 0) {
+                    showMessageBox('Please select a valid pass type.', 'error');
+                    return;
+                }
+                const selectedPass = currentEventPasses[selectedPassIndex];
+                const passName = selectedPass.name;
+                const passPrice = selectedPass.price;
+
+                const totalCalculatedPrice = (passPrice * tickets).toFixed(2);
+
+                // Basic validation
+                if (!name || !email || isNaN(tickets) || tickets < 1) {
+                    showMessageBox('Please fill in all fields correctly.', 'error');
+                    return;
+                }
+
+                // Simple email validation regex
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showMessageBox('Please enter a valid email address.', 'error');
+                    return;
+                }
+
+                // Store booking details
+                currentBookingDetails = {
+                    eventId,
+                    eventName,
+                    eventDate,
+                    name,
+                    email,
+                    passType: passName,
+                    tickets,
+                    pricePerTicket: passPrice,
+                    totalPrice: totalCalculatedPrice
+                };
+
+                // Populate confirmation section
+                confirmEventName.textContent = currentBookingDetails.eventName;
+                confirmEventDate.textContent = currentBookingDetails.eventDate;
+                confirmPassType.textContent = currentBookingDetails.passType;
+                confirmTickets.textContent = currentBookingDetails.tickets;
+                confirmName.textContent = currentBookingDetails.name;
+                confirmEmail.textContent = currentBookingDetails.email;
+                confirmTotalPrice.textContent = `$${currentBookingDetails.totalPrice}`;
+
+                // Hide modal and events grid, show confirmation section
+                bookingModal.classList.remove('show');
+                setTimeout(() => {
+                    bookingModal.classList.add('hidden');
+                }, 300);
+                eventsGridSection.classList.add('hidden');
+                confirmationPaymentSection.classList.remove('hidden');
+            });
+
+            // Event listener for Pay Now button
+            payNowBtn.addEventListener('click', () => {
+                // Simulate payment processing
+                showMessageBox('Processing payment...', 'success'); // Using success for a "loading" state
+                payNowBtn.disabled = true; // Disable button during processing
+                cancelBookingBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Simulate successful payment
+                    showMessageBox(`Payment successful! Your booking for ${currentBookingDetails.eventName} is confirmed.`, 'success');
+
+                    // Optionally, reset the page after a short delay
+                    setTimeout(() => {
+                        confirmationPaymentSection.classList.add('hidden');
+                        eventsGridSection.classList.remove('hidden');
+                        modalBookingForm.reset(); // Clear modal form
+                        payNowBtn.disabled = false;
+                        cancelBookingBtn.disabled = false;
+                    }, 2000); // Wait 2 seconds before returning to event list
+                }, 1500); // Simulate 1.5 seconds payment processing
+            });
+
+            // Event listener for Cancel Booking button
+            cancelBookingBtn.addEventListener('click', () => {
+                showMessageBox('Booking cancelled.', 'error');
+                confirmationPaymentSection.classList.add('hidden');
+                eventsGridSection.classList.remove('hidden');
+                modalBookingForm.reset(); // Clear modal form
+            });
+        });
+    </script>
+</body>
+</html>
